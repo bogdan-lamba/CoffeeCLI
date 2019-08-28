@@ -7,6 +7,19 @@ use Illuminate\Database\Eloquent\Model;
 
 class Receipt extends Model implements ReceiptInterface
 {
+    private $product;
+    private $quantity;
+    private $total;
+
+    public function __construct($product, $quantity, $total)
+    {
+        $this->product = $product;
+        $this->quantity = $quantity;
+        $this->total = $total;
+
+
+    }
+
     /**
      * Get receipt total
      *
@@ -14,7 +27,7 @@ class Receipt extends Model implements ReceiptInterface
      */
     public function getTotal(): int
     {
-
+        return $this->total;
     }
 
     /**
@@ -24,6 +37,9 @@ class Receipt extends Model implements ReceiptInterface
      */
     public function getProducts(): array
     {
-
+        return [
+            'quantity' => $this->quantity,
+            'product' => $this->product
+        ];
     }
 }

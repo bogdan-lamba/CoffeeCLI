@@ -9,6 +9,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class VendingMachine extends Model implements VendingMachineInterface
 {
+    protected $fillable = [
+        'status'
+    ];
+
+    protected $table = 'vending_machine';
+
     /**
      * Get products inventory
      *
@@ -106,5 +112,12 @@ class VendingMachine extends Model implements VendingMachineInterface
     public function getCurrentOrder(): Order
     {
 
+    }
+
+    public function lock()
+    {
+        $this->firstOrCreate([
+            'status' => 'locked'
+        ]);
     }
 }

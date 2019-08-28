@@ -6,6 +6,7 @@ use App\Bill;
 use App\Client;
 use App\Interfaces\Exceptions\InvalidSelectionException;
 use App\Product;
+use App\Receipt;
 use App\VendingMachine;
 use Illuminate\Console\Command;
 
@@ -48,6 +49,9 @@ class Order extends Command
 
         $machine = new VendingMachine();
         $client = new Client();
+
+        $client->useMachine($machine);
+
         $order = $client->placeOrder($product, $this->argument('quantity'));
 
         $this->info('Order ' . $order->status);
@@ -91,6 +95,11 @@ class Order extends Command
             $change = $total - $orderCost;
             $this->info('Change: ' . $change);
 
+            $receipt = new Receipt($product->name, $this->argument('quantity'), $orderCost);
+
+            $this->info('Your receipt... Total paid: ' . $receipt->getTotal());
+
+            $client->leaveMachine();
 
         } else {
             //scan card

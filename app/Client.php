@@ -40,6 +40,7 @@ class Client extends Model implements ClientInterface
     public function useMachine(VendingMachine $machine): void
     {
         //machine gets locked for other clients
+        $machine->lock();
     }
 
     /**
@@ -50,6 +51,9 @@ class Client extends Model implements ClientInterface
     public function leaveMachine(): void
     {
         //machine is unlocked for other clients
+        VendingMachine::first()->update([
+            'status' => 'unlocked'
+        ]);
     }
 
     /**
