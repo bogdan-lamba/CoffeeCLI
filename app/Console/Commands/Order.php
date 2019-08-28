@@ -103,16 +103,16 @@ class Order extends Command
             $change = $total - $orderCost;
             $this->info('Change: ' . $change);
 
-            //substract product quantity
-            $receipt = new Receipt($product->name, $this->argument('quantity'), $orderCost);
-
-            $this->info('Your receipt... Total paid: ' . $receipt->getTotal());
-
-            $client->leaveMachine();
-
         } else {
             //scan card
         }
+
+        //substract product quantity
+        $receipt = new Receipt($product->name, $this->argument('quantity'), $orderCost);
+
+        $this->info('Your receipt... Total paid: ' . $receipt->getTotal());
+
+        $client->leaveMachine();
 
     }
 }

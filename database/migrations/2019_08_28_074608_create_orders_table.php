@@ -17,7 +17,7 @@ class CreateOrdersTable extends Migration
             $table->bigIncrements('id');
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('quantity');
-            $table->string('status')->default('in progress');
+            $table->string('status')->default('pending');
             $table->timestamps();
         });
     }

@@ -111,7 +111,14 @@ class VendingMachine extends Model implements VendingMachineInterface
      */
     public function getCurrentOrder(): Order
     {
-
+        $order = Order::where('status', 'pending')->first();
+        try {
+            if ($order == null)
+                throw new NoOrderInProgressException;
+        } catch (NoOrderInProgressException $e) {
+            echo $e;
+        }
+        return $order;
     }
 
     public function lock()
