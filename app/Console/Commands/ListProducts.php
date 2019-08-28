@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use App\Http\Controllers\ClientController;
 use App\VendingMachine;
 use Illuminate\Console\Command;
 
@@ -41,9 +42,9 @@ class ListProducts extends Command
         $this->info('Listing all available products:');
 
         $headers = ['ID', 'Name', 'Quantity'];
-        $products = (new VendingMachine)->getInventory();
+
+        $products = (new ClientController)->checkAvailableProducts();
 
         $this->table($headers, $products);
-
     }
 }

@@ -2,6 +2,7 @@
 
 namespace App;
 
+use App\Interfaces\Exceptions\InvalidSelectionException;
 use App\Interfaces\Exceptions\NoOrderInProgressException;
 use App\Interfaces\VendingMachine\VendingMachineInterface;
 use Illuminate\Database\Eloquent\Model;
@@ -29,6 +30,17 @@ class VendingMachine extends Model implements VendingMachineInterface
     public function selectProduct(int $productId): bool
     {
 
+        try {
+            $product = Product::find($productId);
+            if($product == null || !$product->isAvailable()) {
+                throw new InvalidSelectionException;
+            } else {
+                return Product::find($productId)->exists();
+            }
+        } catch (InvalidSelectionException $e) {
+            echo  $e;
+            return false;
+        }
     }
 
     /**

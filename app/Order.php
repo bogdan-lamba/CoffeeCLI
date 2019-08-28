@@ -7,6 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Order extends Model implements OrderInterface
 {
+    protected $fillable = [
+        'product_id',
+        'quantity',
+        'status'
+    ];
+
     /**
      * Get order product
      *

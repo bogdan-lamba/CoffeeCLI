@@ -1,18 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App;
 
-use App\CashBag;
-use App\CreditCard;
 use App\Interfaces\Client\ClientInterface;
 use App\Interfaces\Exceptions\EmptyCashBagException;
-use App\Order;
-use App\Product;
-use App\Receipt;
-use App\VendingMachine;
-use Illuminate\Http\Request;
+use Illuminate\Database\Eloquent\Model;
 
-class ClientController extends Controller implements ClientInterface
+class Client extends Model implements ClientInterface
 {
     /**
      * User pays with card
@@ -33,11 +27,7 @@ class ClientController extends Controller implements ClientInterface
      */
     public function setCashBag(CashBag $cash): void
     {
-        try {
-            //cash payment
-        } catch(EmptyCashBagException $e) {
-            throw new EmptyCashBagException('cash payment error');
-        }
+
     }
 
     /**
@@ -49,7 +39,7 @@ class ClientController extends Controller implements ClientInterface
      */
     public function useMachine(VendingMachine $machine): void
     {
-
+        //machine gets locked for other clients
     }
 
     /**
@@ -59,7 +49,7 @@ class ClientController extends Controller implements ClientInterface
      */
     public function leaveMachine(): void
     {
-
+        //machine is unlocked for other clients
     }
 
     /**
@@ -69,7 +59,7 @@ class ClientController extends Controller implements ClientInterface
      */
     public function checkAvailableProducts(): array
     {
-
+        return Product::where('quantity', '!=', '0')->get()->toArray();
     }
 
     /**
@@ -79,10 +69,22 @@ class ClientController extends Controller implements ClientInterface
      * @param int $quantity
      *
      * @return Order
+     * @throws \App\Interfaces\Exceptions\InvalidSelectionException
      */
     public function placeOrder(Product $product, int $quantity): Order
     {
+        $pid = $product->getId();
 
+        $order = [
+            'product_id' => $pid,
+            'quantity' => $quantity
+        ];
+
+        if (!(new VendingMachine)->selectProduct($pid)) {
+            $order['status'] = 'failed';
+        }
+
+        return Order::create($order);
     }
 
     /**
@@ -95,7 +97,9 @@ class ClientController extends Controller implements ClientInterface
      */
     public function cancelOrder(Order $order): void
     {
-
+        $order->update([
+            'status' => 'cancelled',
+        ]);
     }
 
     /**
