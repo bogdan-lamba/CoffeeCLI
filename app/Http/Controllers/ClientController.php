@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\CashBag;
 use App\CreditCard;
 use App\Interfaces\Client\ClientInterface;
+use App\Interfaces\Exceptions\EmptyCashBagException;
 use App\Order;
 use App\Product;
 use App\Receipt;
@@ -32,7 +33,11 @@ class ClientController extends Controller implements ClientInterface
      */
     public function setCashBag(CashBag $cash): void
     {
-
+        try {
+            //cash payment
+        } catch(EmptyCashBagException $e) {
+            throw new EmptyCashBagException('cash payment error');
+        }
     }
 
     /**

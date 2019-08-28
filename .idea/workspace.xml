@@ -237,6 +237,11 @@
     <property name="nodejs_package_manager_path" value="yarn" />
     <property name="settings.editor.selected.configurable" value="Laravel.SettingsForm" />
   </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\xampp\htdocs\softiaCLI\app\Exceptions" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="ruleStates">
       <list>
@@ -265,7 +270,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1566890416567</updated>
-      <workItem from="1566890417995" duration="4720000" />
+      <workItem from="1566890417995" duration="9379000" />
     </task>
     <servers />
   </component>

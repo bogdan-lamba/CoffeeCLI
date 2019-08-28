@@ -15,7 +15,7 @@ class VendingMachine extends Model implements VendingMachineInterface
      */
     public function getInventory(): array
     {
-
+        return Product::where('quantity', '!=', '0')->get()->toArray();
     }
 
     /**
