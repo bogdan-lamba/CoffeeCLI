@@ -2,8 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Http\Controllers\ClientController;
-use App\VendingMachine;
+use App\Client;
 use Illuminate\Console\Command;
 
 class ListProducts extends Command
@@ -43,7 +42,7 @@ class ListProducts extends Command
 
         $headers = ['ID', 'Name', 'Quantity'];
 
-        $products = (new ClientController)->checkAvailableProducts();
+        $products = (new Client)->checkAvailableProducts();
 
         $this->table($headers, $products);
     }

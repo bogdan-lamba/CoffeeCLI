@@ -3,6 +3,7 @@
 namespace App;
 
 use App\Interfaces\Client\ClientInterface;
+use App\Interfaces\Exceptions\CannotCancelOrderException;
 use App\Interfaces\Exceptions\EmptyCashBagException;
 use Illuminate\Database\Eloquent\Model;
 
@@ -63,7 +64,7 @@ class Client extends Model implements ClientInterface
      */
     public function checkAvailableProducts(): array
     {
-        return Product::where('quantity', '!=', '0')->get()->toArray();
+        return Product::all()->toArray();
     }
 
     /**

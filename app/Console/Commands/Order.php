@@ -9,6 +9,7 @@ use App\Product;
 use App\Receipt;
 use App\VendingMachine;
 use Illuminate\Console\Command;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Order extends Command
 {
@@ -45,7 +46,12 @@ class Order extends Command
     public function handle()
     {
         //TODO: sugar and milk options with value
-        $product = Product::find($this->argument('product'));
+        try {
+            $product = Product::findOrFail($this->argument('product'));
+        } catch (ModelNotFoundException $e) {
+            $this->info($e->getMessage());
+            return;
+        }
 
         $machine = new VendingMachine();
         $client = new Client();
@@ -56,8 +62,10 @@ class Order extends Command
 
         $this->info('Order ' . $order->status);
 
-        if($order->status == 'failed')
+        if ($order->status == 'failed') {
+            $client->leaveMachine();
             exit();
+        }
 
         $orderCost = $product->price->price * $this->argument('quantity');
 
@@ -95,6 +103,7 @@ class Order extends Command
             $change = $total - $orderCost;
             $this->info('Change: ' . $change);
 
+            //substract product quantity
             $receipt = new Receipt($product->name, $this->argument('quantity'), $orderCost);
 
             $this->info('Your receipt... Total paid: ' . $receipt->getTotal());
