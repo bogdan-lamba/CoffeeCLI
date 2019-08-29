@@ -6,7 +6,7 @@
 3. Add config to `.env` file
 4. Run `php artisan migrate --seed`
 5. Run `php artisan key:generate`
-6. Config testing environment `phpunit.xml` (Tests use RefreshDatabase trait so its recommended you use a separate DB for tests)
+6. Config testing environment in `phpunit.xml` (Tests use RefreshDatabase trait so its recommended you use a separate DB for tests)
 
 
 ## Usage
