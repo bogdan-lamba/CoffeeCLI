@@ -19,6 +19,10 @@ class ProductsTableSeeder extends Seeder
             [
                 'name' => 'Latte',
                 'quantity' => '0'
+            ],
+            [
+                'name' => 'Tea',
+                'quantity' => '34'
             ]
         ]);
     }

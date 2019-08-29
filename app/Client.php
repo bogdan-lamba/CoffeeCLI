@@ -82,7 +82,8 @@ class Client extends Model implements ClientInterface
 
         $order = [
             'product_id' => $pid,
-            'quantity' => $quantity
+            'quantity' => $quantity,
+            'status' => 'pending'
         ];
 
         if (!(new VendingMachine)->selectProduct($pid)) {

@@ -7,6 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model implements ProductInterface
 {
+    protected $fillable = [
+        'quantity',
+        'name'
+    ];
     /**
      * Get product ID
      *

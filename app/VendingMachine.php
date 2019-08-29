@@ -88,7 +88,7 @@ class VendingMachine extends Model implements VendingMachineInterface
      */
     public function scanCard(): bool
     {
-
+        return true;
     }
 
     /**
@@ -123,8 +123,15 @@ class VendingMachine extends Model implements VendingMachineInterface
 
     public function lock()
     {
-        $this->firstOrCreate([
+        VendingMachine::first()->update([
             'status' => 'locked'
+        ]);
+    }
+
+    public function unlock()
+    {
+        VendingMachine::first()->update([
+            'status' => 'unlocked'
         ]);
     }
 }

@@ -56,6 +56,13 @@ class Order extends Command
         $machine = new VendingMachine();
         $client = new Client();
 
+        if (VendingMachine::first()->status == 'locked')
+        {
+            $this->info('Vending machine is currently in use');
+            $this->info('For testing you can run order:clear command to free machine');
+            return;
+        }
+
         $client->useMachine($machine);
 
         $order = $client->placeOrder($product, $this->argument('quantity'));
@@ -74,15 +81,6 @@ class Order extends Command
         $payMethod = $this->choice('Chose payment method: ', ['1' => 'cash', '2' => 'card']);
 
         if($payMethod == 'cash') {
-            //take payment
-            //check if inserted cash value matches order cost
-            //insert bills in cash bag
-            //give change
-            //confirm order
-            //give product
-            //give receipt
-            //finish order->unlock machine for other clients
-
             $total = 0;
 
             while ($total < $product->price->price * $this->argument('quantity')) {
@@ -104,13 +102,23 @@ class Order extends Command
             $this->info('Change: ' . $change);
 
         } else {
-            //scan card
+            $this->info('Scanning card ...');
+            if ($machine->scanCard()) {
+                $this->info('Charged: ' . $orderCost);
+            }
         }
 
-        //substract product quantity
         $receipt = new Receipt($product->name, $this->argument('quantity'), $orderCost);
 
         $this->info('Your receipt... Total paid: ' . $receipt->getTotal());
+
+        //confirm order
+        //substract product quantity
+        $product->update([
+            'quantity' => $product->quantity - $this->argument('quantity')
+        ]);
+        //add paid bills to cash bag
+        //substract bills used to give change
 
         $client->leaveMachine();
 

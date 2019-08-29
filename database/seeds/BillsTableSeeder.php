@@ -20,6 +20,9 @@ class BillsTableSeeder extends Seeder
             ],
             [
                 'value' => '50'
+            ],
+            [
+                'value' => '1'
             ]
         ]);
     }
